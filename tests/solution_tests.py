@@ -27,7 +27,7 @@ sln = Solution(test_data)
 
 class solution_test(unittest.TestCase):
     def test_no_common_ancestor(self):
-        self.assertEqual(sln.solve("Q", "M"), "No common ancestor")
+        self.assertIsNone(sln.solve("Q", "M"))
 
     def test_invalid_nodes(self):
         with self.assertRaises(InvalidNodesException):

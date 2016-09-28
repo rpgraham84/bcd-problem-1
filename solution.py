@@ -59,10 +59,7 @@ class Solution(object):
         path2 = list(self.get_parents(second_node))
         nca = self.nearest_common_ancestor(path1, path2)
 
-        if nca:
-            return nca
-        else:
-            return "No common ancestor"
+        return nca
 
     @staticmethod
     def nearest_common_ancestor(first_path, second_path):
@@ -71,14 +68,12 @@ class Solution(object):
             nearest because the paths are represented as nodes in order back to 
             their root.
         """
-        if len(first_path) < len(second_path):
-            for node in first_path:
-                if node in second_path:
-                    return node
-        else:
-            for node in second_path:
-                if node in first_path:
-                    return node
+        if len(first_path) > len(second_path):
+            second_path, first_path = first_path, second_path
+
+        for node in first_path:
+            if node in second_path:
+                return node
 
 
 if __name__ == "__main__":
