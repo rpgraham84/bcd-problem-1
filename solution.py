@@ -35,22 +35,16 @@ class Solution(object):
                 # Deal with blank/invalid lines in input file
                 continue
 
-            node = self.forest.get(node_name)
             parent = self.forest.get(parent_name)
-            if parent:
-                self.forest[node_name] = Tree(parent=parent, value=node_name)
-            else:
-                self.forest[node_name] = Tree(parent=None, value=node_name)
+            self.forest[node_name] = Tree(parent=parent, value=node_name)
 
-    def get_parents(self, tree, path=[]):
-        """ Recursive function to get all parents in order from a node.
+    def get_parents(self, node):
+        """ Function to get all parents in order from a node.
         """
-        if tree:
-            path.append(tree.value)
-            if tree.parent:
-                path.append(self.get_parents(tree.parent, path))
+        while node and node.parent:
+            yield node.parent.value
+            node = node.parent
 
-        return path
 
     def solve(self, first_node, second_node):
         first_node = self.forest.get(first_node)
@@ -61,10 +55,8 @@ class Solution(object):
         elif first_node == second_node:
             raise InvalidNodesException("Nodes are the same.")
 
-        path1 = [x for x in self.get_parents(
-            first_node, []) if type(x) == str][1:]
-        path2 = [x for x in self.get_parents(
-            second_node, []) if type(x) == str][1:]
+        path1 = list(self.get_parents(first_node))
+        path2 = list(self.get_parents(second_node))
         nca = self.nearest_common_ancestor(path1, path2)
 
         if nca:
